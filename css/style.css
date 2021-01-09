@@ -1,0 +1,8 @@
+nav{
+    min-height: 50px;
+}
+
+#stored_books_div{
+    min-height: 220px;
+    overflow-y: scroll;
+}
