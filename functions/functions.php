@@ -12,8 +12,6 @@ if(isset($_POST['title'])){
     $quantity = $_POST['quantity'];
     $pub_date = $_POST['pub_date'];
 
-
-
     $sql_pull_books = mysqli_query($conn, "SELECT * FROM books WHERE title = '$title' ");
     if(!$sql_pull_books){
         die('Error with query '. mysqli_error($conn));
@@ -55,6 +53,7 @@ function pull_stored_books(){
         ?>
 
         <tr>
+            <td><input type="checkbox" class="single_array" name="checkbox_array[]" value="<?php echo $id ?>"></td>
             <td><?php echo $title ?></td>                    
             <td><?php echo $isbn ?></td>                    
             <td><?php echo $author ?></td>                    
@@ -62,7 +61,7 @@ function pull_stored_books(){
             <td><?php echo '$'.$cost ?></td>                    
             <td><?php echo $pub_date ?></td> 
             <td>
-                <a href="#" id="edit_book" data-id="<?php echo $id ?>" data-title="<?php echo $title ?>">Operate</a>
+                <a href="#" class="select_book" data-id="<?php echo $id ?>" data-title="<?php echo $title ?>" data-isbn="<?php echo $isbn ?>" data-quantity="<?php echo $quantity ?>" data-cost="<?php echo $cost ?>" data-author="<?php echo $author ?>" data-date="<?php echo $pub_date ?>">Operate</a>
             </td>                    
          </tr>
          
@@ -102,6 +101,7 @@ if(isset($_POST['searched'])){
     <?php
 
     while($row = mysqli_fetch_array($search_books)){
+        $id = $row['id'];
         $title = $row['title'];
         $isbn = $row['isbn'];
         $author = $row['author'];
@@ -110,8 +110,7 @@ if(isset($_POST['searched'])){
         $pub_date = $row['pub_date'];
 
 
-    ?>
-    
+    ?> 
             <tr>
                 <td><?php echo $title ?></td>                    
                 <td><?php echo $isbn ?></td>                    
@@ -120,10 +119,9 @@ if(isset($_POST['searched'])){
                 <td><?php echo '$'.$cost ?></td>                    
                 <td><?php echo $pub_date ?></td> 
                 <td>
-                    <a href="#" id="edit_book" data-id="<?php echo $id ?>" data-title="<?php echo $title ?>">Operate</a>
+                    <a href="#" class="select_book" data-id="<?php echo $id ?>" data-title="<?php echo $title ?>" data-isbn="<?php echo $isbn ?>" data-quantity="<?php echo $quantity ?>" data-cost="<?php echo $cost ?>" data-author="<?php echo $author ?>">Operate</a>
                 </td>                    
-            </tr>
-        
+            </tr>    
     <?php
 
     }
@@ -135,6 +133,47 @@ if(isset($_POST['searched'])){
     <?php
 
     }
-
 }
 
+
+
+// deleting book
+if(isset($_POST['id'])){
+    $id = $_POST['id'];
+
+    $sql_delete_book = mysqli_query($conn, "DELETE FROM books WHERE id = '$id' ");
+    if(!$sql_delete_book){
+        die('Error with query ' . mysqli_error($conn));
+    }
+}
+
+// editing book
+if(isset($_POST['edit_title'])){
+    $id = $_POST['edit_id'];
+    $title = $_POST['edit_title'];
+    $isbn = $_POST['edit_isbn'];
+    $author = $_POST['edit_author'];
+    $cost = $_POST['edit_cost'];
+    $quantity = $_POST['edit_quantity'];
+    $pub_date = $_POST['edit_pub_date'];
+
+    $sql_update_book = mysqli_query($conn, "UPDATE books SET title = '$title', isbn = '$isbn', author = '$author', cost = '$cost', quantity = '$quantity', pub_date = '$pub_date' WHERE id = '$id' ");
+
+    if(!$sql_update_book){
+        die('Error with query ' . mysqli_error($conn));
+    }
+}
+
+
+
+// deleting using checkboxes
+if(isset($_POST['checkbox_array'])){
+    $ids = $_POST['checkbox_array'];
+
+    foreach($ids as $id){
+        $sql_delete_book = mysqli_query($conn, "DELETE FROM books WHERE id = '$id' ");
+        if(!$sql_delete_book){
+            die('Error with query ' . mysqli_error($conn));
+        }
+    }
+}

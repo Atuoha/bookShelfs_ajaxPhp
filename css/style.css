@@ -4,5 +4,25 @@ nav{
 
 #stored_books_div{
     min-height: 220px;
+    max-height: 220px;
     overflow-y: scroll;
+}
+
+#edit_form{
+    display: none;
+}
+
+
+#checkbox_del{
+    display: none;
+}
+
+
+@media (max-width: 792px){
+ 
+    #stored_books_div{
+        min-height: 500;
+        max-height: 500;
+        overflow-y: scroll;
+    }
 }
