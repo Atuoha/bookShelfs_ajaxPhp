@@ -132,7 +132,10 @@ if(isset($_POST['searched'])){
 
     <?php
 
+    }else{
+        echo '<p class="alert alert-danger lead">Opps! No result for keyword </p>';
     }
+
 }
 
 
